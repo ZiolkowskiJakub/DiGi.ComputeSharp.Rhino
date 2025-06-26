@@ -111,7 +111,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
                 dataAccess.GetData(index, ref tolerance);
             }
 
-            DiGi.Geometry.Spatial.Classes.IntersectionResult3D intersectionResult3D = Spatial.Create.IntersectionResult3D_CPU(mesh3D, mesh3Ds, solid, System.Convert.ToSingle(tolerance));
+            DiGi.Geometry.Spatial.Classes.IntersectionResult3D intersectionResult3D = Spatial.Create.IntersectionResult3D(mesh3D, mesh3Ds, solid, System.Convert.ToSingle(tolerance));
 
             index = Params.IndexOfOutputParam("IntersectionResult3D");
             if (index != -1)
