@@ -2,25 +2,28 @@
 
   <PropertyGroup>
 	<TargetFramework>net8.0-windows</TargetFramework>
-	<Version>1.0</Version>
-	<LangVersion>8.0</LangVersion>
+	<LangVersion>10.0</LangVersion>
 	<OutputPath>..\bin\</OutputPath>
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	<TargetExt>.dll</TargetExt>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="ComputeSharp" Version="3.2.0"/>
     <PackageReference Include="Grasshopper" Version="8.19.25132.1001" IncludeAssets="compile;build" />
-	  <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+	<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\DiGi.GIS\DiGi.GIS\DiGi.GIS.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Reference Include="DiGi.ComputeSharp">
+      <HintPath>..\..\DiGi.ComputeSharp\bin\DiGi.ComputeSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="DiGi.ComputeSharp.Geometry">
+      <HintPath>..\..\DiGi.ComputeSharp\bin\DiGi.ComputeSharp.Geometry.dll</HintPath>
+    </Reference>
     <Reference Include="DiGi.Core">
       <HintPath>..\..\DiGi.Core\bin\DiGi.Core.dll</HintPath>
     </Reference>
