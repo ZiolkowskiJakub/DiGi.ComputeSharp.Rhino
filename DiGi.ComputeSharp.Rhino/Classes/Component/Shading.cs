@@ -1,19 +1,24 @@
 ﻿using DiGi.Geometry.Spatial.Classes;
+using DiGi.Geometry.Spatial.Interfaces;
 using DiGi.Rhino.Core.Classes;
 using DiGi.Rhino.Core.Enums;
 using DiGi.Rhino.Geometry.Spatial.Classes;
+using Grasshopper;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Data;
+using Grasshopper.Kernel.Types;
+using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 
 namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
 {
-    public class IntersectionResult3D : VariableParameterComponent
+    public class Shading : VariableParameterComponent
     {
         /// <summary>
         /// Gets the unique ID for this component. Do not change this ID after release.
         /// </summary>
-        public override Guid ComponentGuid => new Guid("68f17db5-2053-4ee7-97dc-74c3d0d296ad");
+        public override Guid ComponentGuid => new Guid("34fc9797-1569-481e-9884-f1694e3e6216");
 
         /// <summary>
         /// Provides an Icon for the component.
@@ -25,9 +30,9 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         /// <summary>
         /// Initializes a new instance of the SAM_point3D class.
         /// </summary>
-        public IntersectionResult3D()
-          : base("ComputeSharp.IntersectionResult3D", "ComputeSharp.IntersectionResult3D",
-              "Creates IntersectionResult3D",
+        public Shading()
+          : base("ComputeSharp.Shading", "ComputeSharp.Shading",
+              "Calculates Shading",
               "DiGi", "DiGi.ComputeSharp")
         {
         }
@@ -40,13 +45,8 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
             get
             {
                 List<Param> result = new List<Param>();
-                result.Add(new Param(new GooMesh3DParam() { Name = "Mesh3D", NickName = "Mesh3D", Description = "Mesh3D", Access = GH_ParamAccess.item }, ParameterVisibility.Binding));
-                result.Add(new Param(new GooMesh3DParam() { Name = "Mesh3Ds", NickName = "Mesh3Ds", Description = "Mesh3Ds", Access = GH_ParamAccess.list }, ParameterVisibility.Binding));
-
-
-                Grasshopper.Kernel.Parameters.Param_Integer param_Integer = new Grasshopper.Kernel.Parameters.Param_Integer() { Name = "Solid", NickName = "Solid", Description = "Are meshes solid?", Access = GH_ParamAccess.item, Optional = true };
-                param_Integer.SetPersistentData(true);
-                result.Add(new Param(param_Integer, ParameterVisibility.Voluntary));
+                result.Add(new Param(new GooPolygonalFace3DParam() { Name = "PolygonalFace3Ds", NickName = "PolygonalFace3Ds", Description = "PolygonalFace3Ds", Access = GH_ParamAccess.list }, ParameterVisibility.Binding));
+                result.Add(new Param(new GooVector3DParam() { Name = "Direction", NickName = "Direction", Description = "Direction", Access = GH_ParamAccess.item }, ParameterVisibility.Binding));
 
                 Grasshopper.Kernel.Parameters.Param_Number param_Number = new Grasshopper.Kernel.Parameters.Param_Number() { Name = "Tolerance", NickName = "Tolerance", Description = "Tolerance", Access = GH_ParamAccess.item, Optional = true };
                 param_Number.SetPersistentData(DiGi.Core.Constans.Tolerance.Distance);
@@ -64,7 +64,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
             get
             {
                 List<Param> result = new List<Param>();
-                result.Add(new Param(new GooIntersectionResult3DParam() { Name = "IntersectionResult3D", NickName = "IntersectionResult3D", Description = "DiGi IntersectionResult3D", Access = GH_ParamAccess.item }, ParameterVisibility.Binding));
+                result.Add(new Param(new GooPolygonalFace3DParam() { Name = "PolygonalFace3Ds", NickName = "PolygonalFace3Ds", Description = "DiGi PolygonalFace3Ds", Access = GH_ParamAccess.tree }, ParameterVisibility.Binding));
                 return result.ToArray();
             }
         }
@@ -79,27 +79,20 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         {
             int index;
 
-            index = Params.IndexOfInputParam("Mesh3D");
-            Mesh3D mesh3D = null;
-            if (index == -1 || !dataAccess.GetData(index, ref mesh3D) || mesh3D == null)
+            index = Params.IndexOfInputParam("PolygonalFace3Ds");
+            List<PolygonalFace3D> polygonalFace3Ds = new List<PolygonalFace3D>();
+            if (index == -1 || !dataAccess.GetDataList(index, polygonalFace3Ds) || polygonalFace3Ds == null)
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Invalid data");
                 return;
             }
 
-            index = Params.IndexOfInputParam("Mesh3Ds");
-            List<Mesh3D> mesh3Ds = new List<Mesh3D>();
-            if (index == -1 || !dataAccess.GetDataList(index, mesh3Ds) || mesh3Ds == null)
+            index = Params.IndexOfInputParam("Direction");
+            Vector3D direction = null;
+            if (index == -1 || !dataAccess.GetData(index, ref direction) || direction == null)
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Invalid data");
                 return;
-            }
-
-            bool solid = true;
-            index = Params.IndexOfInputParam("Solid");
-            if (index != -1)
-            {
-                dataAccess.GetData(index, ref solid);
             }
 
             double tolerance = DiGi.Core.Constans.Tolerance.Distance;
@@ -109,12 +102,29 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
                 dataAccess.GetData(index, ref tolerance);
             }
 
-            DiGi.Geometry.Spatial.Classes.IntersectionResult3D intersectionResult3D = Spatial.Create.IntersectionResult3D(mesh3D, mesh3Ds, solid, Convert.ToSingle(tolerance));
+            List<List<IPolygonalFace3D>> polygonalFace3Ds_Temp = Spatial.Query.Shading(polygonalFace3Ds, direction, tolerance);
 
-            index = Params.IndexOfOutputParam("IntersectionResult3D");
+            index = Params.IndexOfOutputParam("PolygonalFace3Ds");
             if (index != -1)
             {
-                dataAccess.SetData(index, new GooIntersectionResult3D(intersectionResult3D));
+
+                DataTree<GooPolygonalFace3D> dataTree = new DataTree<GooPolygonalFace3D>();
+                for(int i =0; i < polygonalFace3Ds_Temp.Count; i++)
+                {
+                    List<IPolygonalFace3D> polygonalFace3DsList = polygonalFace3Ds_Temp[i];
+                    if(polygonalFace3DsList == null)
+                    {
+                        continue;
+                    }
+
+                    GH_Path gH_Path = new GH_Path(i);
+                    for (int j = 0; j < polygonalFace3DsList.Count; j++)
+                    {
+                        dataTree.Add(new GooPolygonalFace3D(polygonalFace3DsList[j]), gH_Path);
+                    }
+                }
+
+                dataAccess.SetDataTree(index, dataTree);
             }
         }
     }
