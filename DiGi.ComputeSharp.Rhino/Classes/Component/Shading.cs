@@ -18,7 +18,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         /// <summary>
         /// Gets the unique ID for this component. Do not change this ID after release.
         /// </summary>
-        public override Guid ComponentGuid => new Guid("34fc9797-1569-481e-9884-f1694e3e6216");
+        public override Guid ComponentGuid => new ("34fc9797-1569-481e-9884-f1694e3e6216");
 
         /// <summary>
         /// Provides an Icon for the component.
@@ -44,15 +44,17 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         {
             get
             {
-                List<Param> result = new List<Param>();
-                result.Add(new Param(new GooPolygonalFace3DParam() { Name = "PolygonalFace3Ds", NickName = "PolygonalFace3Ds", Description = "PolygonalFace3Ds", Access = GH_ParamAccess.list }, ParameterVisibility.Binding));
-                result.Add(new Param(new GooVector3DParam() { Name = "Direction", NickName = "Direction", Description = "Direction", Access = GH_ParamAccess.item }, ParameterVisibility.Binding));
+                List<Param> result =
+                [
+                    new Param(new GooPolygonalFace3DParam() { Name = "PolygonalFace3Ds", NickName = "PolygonalFace3Ds", Description = "PolygonalFace3Ds", Access = GH_ParamAccess.list }, ParameterVisibility.Binding),
+                    new Param(new GooVector3DParam() { Name = "Direction", NickName = "Direction", Description = "Direction", Access = GH_ParamAccess.item }, ParameterVisibility.Binding),
+                ];
 
-                Grasshopper.Kernel.Parameters.Param_Number param_Number = new Grasshopper.Kernel.Parameters.Param_Number() { Name = "Tolerance", NickName = "Tolerance", Description = "Tolerance", Access = GH_ParamAccess.item, Optional = true };
+                Grasshopper.Kernel.Parameters.Param_Number param_Number = new () { Name = "Tolerance", NickName = "Tolerance", Description = "Tolerance", Access = GH_ParamAccess.item, Optional = true };
                 param_Number.SetPersistentData(DiGi.Core.Constans.Tolerance.Distance);
                 result.Add(new Param(param_Number, ParameterVisibility.Voluntary));
-                
-                return result.ToArray();
+
+                return [.. result];
             }
         }
 
@@ -63,9 +65,11 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         {
             get
             {
-                List<Param> result = new List<Param>();
-                result.Add(new Param(new GooPolygonalFace3DParam() { Name = "PolygonalFace3Ds", NickName = "PolygonalFace3Ds", Description = "DiGi PolygonalFace3Ds", Access = GH_ParamAccess.tree }, ParameterVisibility.Binding));
-                return result.ToArray();
+                List<Param> result =
+                [
+                    new Param(new GooPolygonalFace3DParam() { Name = "PolygonalFace3Ds", NickName = "PolygonalFace3Ds", Description = "DiGi PolygonalFace3Ds", Access = GH_ParamAccess.tree }, ParameterVisibility.Binding),
+                ];
+                return [.. result];
             }
         }
 
@@ -80,7 +84,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
             int index;
 
             index = Params.IndexOfInputParam("PolygonalFace3Ds");
-            List<PolygonalFace3D> polygonalFace3Ds = new List<PolygonalFace3D>();
+            List<PolygonalFace3D> polygonalFace3Ds = [];
             if (index == -1 || !dataAccess.GetDataList(index, polygonalFace3Ds) || polygonalFace3Ds == null)
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Invalid data");
@@ -88,7 +92,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
             }
 
             index = Params.IndexOfInputParam("Direction");
-            Vector3D direction = null;
+            Vector3D? direction = null;
             if (index == -1 || !dataAccess.GetData(index, ref direction) || direction == null)
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Invalid data");
@@ -102,30 +106,32 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
                 dataAccess.GetData(index, ref tolerance);
             }
 
-            List<List<IPolygonalFace3D>> polygonalFace3Ds_Temp = Spatial.Query.Shading(polygonalFace3Ds, direction, tolerance);
+            DataTree<GooPolygonalFace3D> dataTree = new();
 
             index = Params.IndexOfOutputParam("PolygonalFace3Ds");
             if (index != -1)
             {
-
-                DataTree<GooPolygonalFace3D> dataTree = new DataTree<GooPolygonalFace3D>();
-                for(int i =0; i < polygonalFace3Ds_Temp.Count; i++)
+                List<List<IPolygonalFace3D>?>? polygonalFace3Ds_Temp = Spatial.Query.Shading(polygonalFace3Ds, direction, tolerance);
+                if (polygonalFace3Ds_Temp is not null)
                 {
-                    List<IPolygonalFace3D> polygonalFace3DsList = polygonalFace3Ds_Temp[i];
-                    if(polygonalFace3DsList == null)
+                    for (int i = 0; i < polygonalFace3Ds_Temp.Count; i++)
                     {
-                        continue;
-                    }
+                        List<IPolygonalFace3D>? polygonalFace3DsList = polygonalFace3Ds_Temp[i];
+                        if (polygonalFace3DsList == null)
+                        {
+                            continue;
+                        }
 
-                    GH_Path gH_Path = new GH_Path(i);
-                    for (int j = 0; j < polygonalFace3DsList.Count; j++)
-                    {
-                        dataTree.Add(new GooPolygonalFace3D(polygonalFace3DsList[j]), gH_Path);
+                        GH_Path gH_Path = new (i);
+                        for (int j = 0; j < polygonalFace3DsList.Count; j++)
+                        {
+                            dataTree.Add(new GooPolygonalFace3D(polygonalFace3DsList[j]), gH_Path);
+                        }
                     }
                 }
-
-                dataAccess.SetDataTree(index, dataTree);
             }
+
+            dataAccess.SetDataTree(index, dataTree);
         }
     }
 }

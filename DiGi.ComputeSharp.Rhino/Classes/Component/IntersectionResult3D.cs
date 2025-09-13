@@ -13,7 +13,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         /// <summary>
         /// Gets the unique ID for this component. Do not change this ID after release.
         /// </summary>
-        public override Guid ComponentGuid => new Guid("68f17db5-2053-4ee7-97dc-74c3d0d296ad");
+        public override Guid ComponentGuid => new ("68f17db5-2053-4ee7-97dc-74c3d0d296ad");
 
         /// <summary>
         /// Provides an Icon for the component.
@@ -39,20 +39,22 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         {
             get
             {
-                List<Param> result = new List<Param>();
-                result.Add(new Param(new GooMesh3DParam() { Name = "Mesh3D", NickName = "Mesh3D", Description = "Mesh3D", Access = GH_ParamAccess.item }, ParameterVisibility.Binding));
-                result.Add(new Param(new GooMesh3DParam() { Name = "Mesh3Ds", NickName = "Mesh3Ds", Description = "Mesh3Ds", Access = GH_ParamAccess.list }, ParameterVisibility.Binding));
+                List<Param> result =
+                [
+                    new Param(new GooMesh3DParam() { Name = "Mesh3D", NickName = "Mesh3D", Description = "Mesh3D", Access = GH_ParamAccess.item }, ParameterVisibility.Binding),
+                    new Param(new GooMesh3DParam() { Name = "Mesh3Ds", NickName = "Mesh3Ds", Description = "Mesh3Ds", Access = GH_ParamAccess.list }, ParameterVisibility.Binding),
+                ];
 
 
-                Grasshopper.Kernel.Parameters.Param_Integer param_Integer = new Grasshopper.Kernel.Parameters.Param_Integer() { Name = "Solid", NickName = "Solid", Description = "Are meshes solid?", Access = GH_ParamAccess.item, Optional = true };
+                Grasshopper.Kernel.Parameters.Param_Integer param_Integer = new () { Name = "Solid", NickName = "Solid", Description = "Are meshes solid?", Access = GH_ParamAccess.item, Optional = true };
                 param_Integer.SetPersistentData(true);
                 result.Add(new Param(param_Integer, ParameterVisibility.Voluntary));
 
-                Grasshopper.Kernel.Parameters.Param_Number param_Number = new Grasshopper.Kernel.Parameters.Param_Number() { Name = "Tolerance", NickName = "Tolerance", Description = "Tolerance", Access = GH_ParamAccess.item, Optional = true };
+                Grasshopper.Kernel.Parameters.Param_Number param_Number = new () { Name = "Tolerance", NickName = "Tolerance", Description = "Tolerance", Access = GH_ParamAccess.item, Optional = true };
                 param_Number.SetPersistentData(DiGi.Core.Constans.Tolerance.Distance);
                 result.Add(new Param(param_Number, ParameterVisibility.Voluntary));
                 
-                return result.ToArray();
+                return [.. result];
             }
         }
 
@@ -63,9 +65,11 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         {
             get
             {
-                List<Param> result = new List<Param>();
-                result.Add(new Param(new GooIntersectionResult3DParam() { Name = "IntersectionResult3D", NickName = "IntersectionResult3D", Description = "DiGi IntersectionResult3D", Access = GH_ParamAccess.item }, ParameterVisibility.Binding));
-                return result.ToArray();
+                List<Param> result =
+                [
+                    new Param(new GooIntersectionResult3DParam() { Name = "IntersectionResult3D", NickName = "IntersectionResult3D", Description = "DiGi IntersectionResult3D", Access = GH_ParamAccess.item }, ParameterVisibility.Binding),
+                ];
+                return [.. result];
             }
         }
 
@@ -80,7 +84,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
             int index;
 
             index = Params.IndexOfInputParam("Mesh3D");
-            Mesh3D mesh3D = null;
+            Mesh3D? mesh3D = null;
             if (index == -1 || !dataAccess.GetData(index, ref mesh3D) || mesh3D == null)
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Invalid data");
@@ -88,7 +92,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
             }
 
             index = Params.IndexOfInputParam("Mesh3Ds");
-            List<Mesh3D> mesh3Ds = new List<Mesh3D>();
+            List<Mesh3D> mesh3Ds = [];
             if (index == -1 || !dataAccess.GetDataList(index, mesh3Ds) || mesh3Ds == null)
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Invalid data");
@@ -109,7 +113,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
                 dataAccess.GetData(index, ref tolerance);
             }
 
-            DiGi.Geometry.Spatial.Classes.IntersectionResult3D intersectionResult3D = Spatial.Create.IntersectionResult3D(mesh3D, mesh3Ds, solid, Convert.ToSingle(tolerance));
+            DiGi.Geometry.Spatial.Classes.IntersectionResult3D? intersectionResult3D = Spatial.Create.IntersectionResult3D(mesh3D, mesh3Ds, solid, Convert.ToSingle(tolerance));
 
             index = Params.IndexOfOutputParam("IntersectionResult3D");
             if (index != -1)
