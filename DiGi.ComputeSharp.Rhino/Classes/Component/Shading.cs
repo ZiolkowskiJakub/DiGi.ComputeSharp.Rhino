@@ -111,12 +111,12 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
             index = Params.IndexOfOutputParam("PolygonalFace3Ds");
             if (index != -1)
             {
-                List<List<IPolygonalFace3D>?>? polygonalFace3Ds_Temp = Spatial.Query.Shading(polygonalFace3Ds, direction, tolerance);
+                List<List<PolygonalFace3D>?>? polygonalFace3Ds_Temp = Spatial.Query.Shading(polygonalFace3Ds, direction, tolerance);
                 if (polygonalFace3Ds_Temp is not null)
                 {
                     for (int i = 0; i < polygonalFace3Ds_Temp.Count; i++)
                     {
-                        List<IPolygonalFace3D>? polygonalFace3DsList = polygonalFace3Ds_Temp[i];
+                        List<PolygonalFace3D>? polygonalFace3DsList = polygonalFace3Ds_Temp[i];
                         if (polygonalFace3DsList == null)
                         {
                             continue;
