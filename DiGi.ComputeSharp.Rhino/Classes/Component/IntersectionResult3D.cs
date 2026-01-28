@@ -13,7 +13,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         /// <summary>
         /// Gets the unique ID for this component. Do not change this ID after release.
         /// </summary>
-        public override Guid ComponentGuid => new ("68f17db5-2053-4ee7-97dc-74c3d0d296ad");
+        public override Guid ComponentGuid => new("68f17db5-2053-4ee7-97dc-74c3d0d296ad");
 
         /// <summary>
         /// Provides an Icon for the component.
@@ -45,15 +45,14 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
                     new Param(new GooMesh3DParam() { Name = "Mesh3Ds", NickName = "Mesh3Ds", Description = "Mesh3Ds", Access = GH_ParamAccess.list }, ParameterVisibility.Binding),
                 ];
 
-
-                Grasshopper.Kernel.Parameters.Param_Integer param_Integer = new () { Name = "Solid", NickName = "Solid", Description = "Are meshes solid?", Access = GH_ParamAccess.item, Optional = true };
+                Grasshopper.Kernel.Parameters.Param_Integer param_Integer = new() { Name = "Solid", NickName = "Solid", Description = "Are meshes solid?", Access = GH_ParamAccess.item, Optional = true };
                 param_Integer.SetPersistentData(true);
                 result.Add(new Param(param_Integer, ParameterVisibility.Voluntary));
 
-                Grasshopper.Kernel.Parameters.Param_Number param_Number = new () { Name = "Tolerance", NickName = "Tolerance", Description = "Tolerance", Access = GH_ParamAccess.item, Optional = true };
+                Grasshopper.Kernel.Parameters.Param_Number param_Number = new() { Name = "Tolerance", NickName = "Tolerance", Description = "Tolerance", Access = GH_ParamAccess.item, Optional = true };
                 param_Number.SetPersistentData(DiGi.Core.Constans.Tolerance.Distance);
                 result.Add(new Param(param_Number, ParameterVisibility.Voluntary));
-                
+
                 return [.. result];
             }
         }

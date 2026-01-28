@@ -1,13 +1,10 @@
 ﻿using DiGi.Geometry.Spatial.Classes;
-using DiGi.Geometry.Spatial.Interfaces;
 using DiGi.Rhino.Core.Classes;
 using DiGi.Rhino.Core.Enums;
 using DiGi.Rhino.Geometry.Spatial.Classes;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
-using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 
@@ -18,7 +15,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         /// <summary>
         /// Gets the unique ID for this component. Do not change this ID after release.
         /// </summary>
-        public override Guid ComponentGuid => new ("34fc9797-1569-481e-9884-f1694e3e6216");
+        public override Guid ComponentGuid => new("34fc9797-1569-481e-9884-f1694e3e6216");
 
         /// <summary>
         /// Provides an Icon for the component.
@@ -50,7 +47,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
                     new Param(new GooVector3DParam() { Name = "Direction", NickName = "Direction", Description = "Direction", Access = GH_ParamAccess.item }, ParameterVisibility.Binding),
                 ];
 
-                Grasshopper.Kernel.Parameters.Param_Number param_Number = new () { Name = "Tolerance", NickName = "Tolerance", Description = "Tolerance", Access = GH_ParamAccess.item, Optional = true };
+                Grasshopper.Kernel.Parameters.Param_Number param_Number = new() { Name = "Tolerance", NickName = "Tolerance", Description = "Tolerance", Access = GH_ParamAccess.item, Optional = true };
                 param_Number.SetPersistentData(DiGi.Core.Constans.Tolerance.Distance);
                 result.Add(new Param(param_Number, ParameterVisibility.Voluntary));
 
@@ -122,7 +119,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
                             continue;
                         }
 
-                        GH_Path gH_Path = new (i);
+                        GH_Path gH_Path = new(i);
                         for (int j = 0; j < polygonalFace3DsList.Count; j++)
                         {
                             dataTree.Add(new GooPolygonalFace3D(polygonalFace3DsList[j]), gH_Path);

@@ -14,7 +14,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         //Return a short string describing the purpose of this GHA library.
         public override string Description => "";
 
-        public override Guid Id => new ("eca86148-a64f-4abf-a46f-c88b6e82ee1f");
+        public override Guid Id => new("eca86148-a64f-4abf-a46f-c88b6e82ee1f");
 
         //Return a string identifying you or your company.
         public override string AuthorName => "Jakub Ziolkowski";
