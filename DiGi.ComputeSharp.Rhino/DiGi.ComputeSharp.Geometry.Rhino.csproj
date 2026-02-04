@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net8.0-windows</TargetFramework>
+	<TargetFramework>net10.0-windows</TargetFramework>
 	<LangVersion>latest</LangVersion>
 	<OutputPath>..\bin\</OutputPath>
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -25,8 +25,6 @@
   <ItemGroup>
 	<PackageReference Include="ComputeSharp" Version="3.2.0" />
     <PackageReference Include="Grasshopper" Version="8.19.25132.1001" IncludeAssets="compile;build" />
-	<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Text.Json" Version="10.0.2" />
   </ItemGroup>
 
   <ItemGroup>
