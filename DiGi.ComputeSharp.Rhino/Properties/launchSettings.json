@@ -1,9 +1,9 @@
 {
-  "profiles": {
-    "DiGi.Rhino.Geometry": {
-      "commandName": "Executable",
-      "executablePath": "C:\\Program Files\\Rhino 8\\System\\Rhino.exe",
-      "commandLineArgs": ""
+    "profiles": {
+        "DiGi.Rhino.Geometry": {
+            "commandName": "Executable",
+            "executablePath": "C:\\Program Files\\Rhino 8\\System\\Rhino.exe",
+            "commandLineArgs": ""
+        }
     }
-  }
 }
