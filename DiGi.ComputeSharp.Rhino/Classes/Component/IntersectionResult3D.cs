@@ -50,7 +50,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
                 result.Add(new Param(param_Integer, ParameterVisibility.Voluntary));
 
                 Grasshopper.Kernel.Parameters.Param_Number param_Number = new() { Name = "Tolerance", NickName = "Tolerance", Description = "Tolerance", Access = GH_ParamAccess.item, Optional = true };
-                param_Number.SetPersistentData(DiGi.Core.Constans.Tolerance.Distance);
+                param_Number.SetPersistentData(DiGi.Core.Constants.Tolerance.Distance);
                 result.Add(new Param(param_Number, ParameterVisibility.Voluntary));
 
                 return [.. result];
@@ -105,7 +105,7 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
                 dataAccess.GetData(index, ref solid);
             }
 
-            double tolerance = DiGi.Core.Constans.Tolerance.Distance;
+            double tolerance = DiGi.Core.Constants.Tolerance.Distance;
             index = Params.IndexOfInputParam("Tolerance");
             if (index != -1)
             {
