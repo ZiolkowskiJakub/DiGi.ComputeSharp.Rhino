@@ -25,6 +25,7 @@
   <ItemGroup>
 	<PackageReference Include="ComputeSharp" Version="3.2.0" />
     <PackageReference Include="Grasshopper" Version="8.29.26063.11001" IncludeAssets="compile;build" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.5" />
   </ItemGroup>
 
   <ItemGroup>
