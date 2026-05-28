@@ -9,6 +9,7 @@
 	<TargetExt>.dll</TargetExt>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	<Nullable>enable</Nullable>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
 	<PropertyGroup>
