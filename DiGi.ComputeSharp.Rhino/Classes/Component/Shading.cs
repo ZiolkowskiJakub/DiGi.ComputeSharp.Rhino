@@ -1,4 +1,4 @@
-﻿using DiGi.Geometry.Spatial.Classes;
+using DiGi.Geometry.Spatial.Classes;
 using DiGi.Rhino.Core.Classes;
 using DiGi.Rhino.Core.Enums;
 using DiGi.Rhino.Geometry.Spatial.Classes;
@@ -10,6 +10,9 @@ using System.Collections.Generic;
 
 namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
 {
+    /// <summary>
+    /// Grasshopper component that calculates the shading of polygonal faces using ComputeSharp.
+    /// </summary>
     public class Shading : VariableParameterComponent
     {
         /// <summary>
@@ -17,11 +20,14 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         /// </summary>
         public override Guid ComponentGuid => new("34fc9797-1569-481e-9884-f1694e3e6216");
 
-        /// <summary>
-        /// Provides an Icon for the component.
-        /// </summary>
+        // <summary>
+        // Provides an Icon for the component.
+        // </summary>
         //protected override System.Drawing.Bitmap Icon => Resources.DiGi_Small;
 
+        /// <summary>
+        /// Gets the exposure level for this component in the Grasshopper toolbar.
+        /// </summary>
         public override GH_Exposure Exposure => GH_Exposure.primary;
 
         /// <summary>

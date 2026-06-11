@@ -1,4 +1,4 @@
-﻿using DiGi.Geometry.Spatial.Classes;
+using DiGi.Geometry.Spatial.Classes;
 using DiGi.Rhino.Core.Classes;
 using DiGi.Rhino.Core.Enums;
 using DiGi.Rhino.Geometry.Spatial.Classes;
@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
 {
+    /// <summary>
+    /// Grasshopper component that calculates the intersection results of 3D meshes using ComputeSharp.
+    /// </summary>
     public class IntersectionResult3D : VariableParameterComponent
     {
         /// <summary>
@@ -15,11 +18,14 @@ namespace DiGi.ComputeSharp.Geometry.Rhino.Classes
         /// </summary>
         public override Guid ComponentGuid => new("68f17db5-2053-4ee7-97dc-74c3d0d296ad");
 
-        /// <summary>
-        /// Provides an Icon for the component.
-        /// </summary>
+        // <summary>
+        // Provides an Icon for the component.
+        // </summary>
         //protected override System.Drawing.Bitmap Icon => Resources.DiGi_Small;
 
+        /// <summary>
+        /// Gets the exposure level for this component in the Grasshopper toolbar.
+        /// </summary>
         public override GH_Exposure Exposure => GH_Exposure.primary;
 
         /// <summary>
